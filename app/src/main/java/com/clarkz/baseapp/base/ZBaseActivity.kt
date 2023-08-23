@@ -6,6 +6,7 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.clarkz.baseapp.databinding.ActivityZbaseBinding
+import com.orhanobut.logger.Logger
 
 /**
  * @author: Clark Zhong
@@ -52,7 +53,7 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
      * 初始化数据
      */
     open fun initData() {
-
+        Logger.d("initData>>>>>>>")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
