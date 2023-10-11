@@ -2,17 +2,26 @@ package com.clarkz.baseapp.base
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.viewbinding.ViewBinding
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class ZMVPActivity<T : ViewBinding> constructor(
+    @StringRes
     barTitleId: Int? = null,  //标题
     toolbarVisible: Boolean = true,  //标题栏是否可见
-    toolbarBackgroundColor: Int = Color.WHITE,  //标题栏背景颜色
+    @ColorRes
+    toolbarBackgroundColor: Int? = null,  //标题栏背景颜色
+    @DrawableRes
     toolbarBackgroundImage: Int? = null,   //标题栏背景图片
+    @DrawableRes
     toolbarBackBtnRes: Int? = null,  //标题栏返回按钮
-    backgroundColor: Int = Color.WHITE,  //内容视图背景颜色
+    @ColorRes
+    backgroundColor: Int? = null,  //内容视图背景颜色
+    @DrawableRes
     backgroundImage: Int? = null  //内容视图背景图片
 ) : ZBaseActivity<T>(
     barTitleId,
