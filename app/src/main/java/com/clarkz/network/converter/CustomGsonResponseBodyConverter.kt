@@ -19,17 +19,17 @@ class CustomGsonResponseBodyConverter<T> constructor(
     override fun convert(value: ResponseBody): T? {
         val response = value.string()
 
-        val mediaType = value.contentType()
-        val charset = mediaType?.charset(Charsets.UTF_8) ?: Charsets.UTF_8
-
-        val arrayInput = ByteArrayInputStream(response.toByteArray(charset))
-
         val baseServerRsp = gson.fromJson(response, BaseServerRsp::class.java)
 
         if (baseServerRsp.code != okCode){
             value.close()
             throw  ApiException(baseServerRsp.code, baseServerRsp.msg)
         }
+
+        val mediaType = value.contentType()
+        val charset = mediaType?.charset(Charsets.UTF_8) ?: Charsets.UTF_8
+
+        val arrayInput = ByteArrayInputStream(response.toByteArray(charset))
 
         val reader = InputStreamReader(arrayInput, charset)
         val jsonReader = gson.newJsonReader(reader)
