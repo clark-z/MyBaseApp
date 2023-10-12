@@ -28,4 +28,6 @@ interface IZBaseView {
      */
     fun hideLoading()
 
+    fun showShortToast(msg: String)
+
 }

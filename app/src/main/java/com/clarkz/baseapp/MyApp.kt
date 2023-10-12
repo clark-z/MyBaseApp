@@ -35,7 +35,7 @@ class MyApp : Application() {
             this,
             ApiService::class.java,
             "http://www.topozhe.com/ws/tupozhe/",
-            true
+            BuildConfig.DEBUG
         )
     }
 

@@ -2,6 +2,7 @@ package com.clarkz.baseapp.base
 
 import android.os.Bundle
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -136,9 +137,6 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
         if (toolbarVisible) {
 //            //设置支持action menu
 //            setSupportActionBar(baseVB.vToolbar.root)
-            //适配沉浸式标题栏
-            ImmersionBar.setTitleBar(this, baseVB.vToolbar.root)
-
             //设置背景
             updateToolbarColor(ContextCompat.getColor(this, toolbarBackgroundColor ?: R.color.teal_700))
 
@@ -186,11 +184,17 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
         setContentView(baseVB.root)
     }
 
-    protected fun initImmersionBar(){
+    open fun initImmersionBar(){
         ImmersionBar.with(this)
             .statusBarColor(R.color.teal_700)
             .autoDarkModeEnable(true)
             .init()
+
+        if (toolbarVisible) {
+            //适配沉浸式标题栏
+            ImmersionBar.setTitleBar(this, baseVB.vToolbar.root)
+        }
+
 
 //        ImmersionBar.with(this)
 //            .transparentStatusBar()  //透明状态栏，不写默认透明色
@@ -284,4 +288,7 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
         baseVB.vToolbar.root.setBackgroundResource(res)
     }
 
+    open fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, msg, duration).show()
+    }
 }

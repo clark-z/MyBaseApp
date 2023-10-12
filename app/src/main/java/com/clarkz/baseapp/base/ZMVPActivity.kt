@@ -2,6 +2,7 @@ package com.clarkz.baseapp.base
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -87,5 +88,9 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
 
     override fun hideLoading() {
 
+    }
+
+    override fun showShortToast(msg: String) {
+        showToast(msg, Toast.LENGTH_SHORT)
     }
 }

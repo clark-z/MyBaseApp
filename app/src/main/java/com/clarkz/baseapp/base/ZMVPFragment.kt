@@ -2,6 +2,7 @@ package com.clarkz.baseapp.base
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -62,5 +63,9 @@ abstract class ZMVPFragment<T: ViewBinding>: ZBaseFragment<T>(), IZBaseView {
 
     override fun hideLoading() {
 
+    }
+
+    override fun showShortToast(msg: String) {
+        myActivity.showToast(msg, Toast.LENGTH_SHORT)
     }
 }

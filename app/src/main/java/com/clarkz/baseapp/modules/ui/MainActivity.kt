@@ -1,11 +1,20 @@
 package com.clarkz.baseapp.modules.ui
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Path
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.ViewTreeObserver.OnPreDrawListener
+import android.window.SplashScreenView
+import androidx.core.animation.doOnEnd
 import com.clarkz.baseapp.R
 import com.clarkz.baseapp.base.ZBaseActivity
 import com.clarkz.baseapp.databinding.ActivityMainBinding
+import kotlin.io.path.Path
+import kotlin.io.path.moveTo
 
 class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
 
@@ -28,8 +37,34 @@ class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
 //    }
 
     override fun initView() {
+        //挂起启动界面
+//        val contentView = findViewById<View>(android.R.id.content)
+//        contentView.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
+//            override fun onPreDraw(): Boolean {
+//                return false  //true
+//            }
+//
+//        })
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                val path = Path()
+                path.moveTo(1.0f, 1.0f)
+                path.lineTo(0f, 0f)
+                val scaleOut = ObjectAnimator.ofFloat(splashScreenView, View.SCALE_X, View.SCALE_Y, path)
+                scaleOut.duration = 2000
+                scaleOut.doOnEnd {
+                    splashScreenView.remove()
 
+                    handler.postDelayed({
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+//            finish()
+                    }, 2000)
+                }
+                scaleOut.start()
+            }
+        }
     }
 
     override fun initEvent() {
@@ -38,11 +73,7 @@ class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
     override fun onResume() {
         super.onResume()
 
-        handler.postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-//            finish()
-        }, 2000)
+
     }
 
     override fun onDestroy() {
