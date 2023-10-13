@@ -58,4 +58,91 @@ class RetrofitManager<T> constructor(
             .writeTimeout(60L, TimeUnit.SECONDS)
             .build()
     }
+
+//    /**
+//     * 是否需要token
+//     */
+//    private fun isNeedToken(encodedPath: String): Boolean {
+//
+//        noTokenApi.forEach {
+//            if (encodedPath.contains(it)) {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+
+//    /**
+//     * 设置公共参数, token
+//     */
+//    private fun addQueryParameterInterceptor(): Interceptor {
+//
+//        return Interceptor { chain ->
+//            val originalRequest = chain.request()
+//            val encodedPath = originalRequest.url().encodedPath()
+//
+//            val sp = MyApp.context.getSharedPreferences(
+//                Constants.SHARE_BREAKTHROUGH,
+//                Context.MODE_PRIVATE
+//            )
+//            val token = sp.getString(Constants.SESSION_TOKEN, "")
+//
+//            if (isNeedToken(encodedPath) && !token.isNullOrEmpty()) {  //排除不需要token的请求，并且token不为空
+//                val modifiedUrl = originalRequest.url()
+//                    .newBuilder()
+//                    .addQueryParameter("token", token)
+//                    .build()
+//                val request = originalRequest.newBuilder().url(modifiedUrl).build()
+//                chain.proceed(request)
+//            } else {
+//                chain.proceed(originalRequest)
+//            }
+//        }
+//    }
+
+//    /**
+//     * 设置头
+//     */
+//    private fun addHeaderInterceptor(): Interceptor {
+//        return Interceptor { chain ->
+//            val originalRequest = chain.request()
+//            val requestBuilder = originalRequest.newBuilder()
+//                // Provide your custom header here
+////                .header("token", "")
+//                .method(originalRequest.method, originalRequest.body)
+//            val request = requestBuilder.build()
+//            chain.proceed(request)
+//        }
+//    }
+
+//    private fun addCacheInterceptor(): Interceptor {
+//        return Interceptor { chain ->
+//            var request = chain.request()
+//
+//            if (NetworkUtils.isAvailable() || request.url
+//                    .queryParameter("token") == null
+//            ) { //没有token的请求不读取缓存
+//                val response = chain.proceed(request)
+//                //有网络不适用缓存
+//                val maxAge = 10  //10s内的刷新获取缓存
+//                response.newBuilder()
+//                    .removeHeader("Pragma")
+//                    .removeHeader("Cache-Control")
+//                    .header("Cache-Control", "public, max-age=$maxAge")
+//                    .build()
+//            } else {
+//                //无网络，使用缓存
+//                request = request.newBuilder()
+//                    .cacheControl(CacheControl.FORCE_CACHE)
+//                    .build()
+//                val response = chain.proceed(request)
+//                val maxStale = 60 * 60 * 24 * 3   //缓存3天，实际无效果，源码会一直缓存（待验证）
+//                response.newBuilder()
+//                    .removeHeader("Pragma")
+//                    .removeHeader("Cache-Control")
+//                    .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+//                    .build()
+//            }
+//        }
+//    }
 }

@@ -7,18 +7,16 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.ViewTreeObserver.OnPreDrawListener
-import android.window.SplashScreenView
 import androidx.core.animation.doOnEnd
 import com.clarkz.baseapp.R
 import com.clarkz.baseapp.base.ZBaseActivity
 import com.clarkz.baseapp.databinding.ActivityMainBinding
-import kotlin.io.path.Path
-import kotlin.io.path.moveTo
 
 class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
 
 //    override fun getLayoutId(): Int = R.layout.activity_main
+
+    private var isSplashView = false
 
     private val handler: Handler by lazy {
         Handler(Looper.getMainLooper())
@@ -51,19 +49,29 @@ class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
                 val path = Path()
                 path.moveTo(1.0f, 1.0f)
                 path.lineTo(0f, 0f)
-                val scaleOut = ObjectAnimator.ofFloat(splashScreenView, View.SCALE_X, View.SCALE_Y, path)
-                scaleOut.duration = 2000
+                val scaleOut =
+                    ObjectAnimator.ofFloat(splashScreenView, View.SCALE_X, View.SCALE_Y, path)
+                scaleOut.duration = 1000
                 scaleOut.doOnEnd {
                     splashScreenView.remove()
 
+                    isSplashView = true
                     handler.postDelayed({
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
-//            finish()
+                        finish()
                     }, 2000)
                 }
                 scaleOut.start()
             }
+        }
+
+        if (!isSplashView) {
+            handler.postDelayed({
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }, 2000)
         }
     }
 
@@ -72,8 +80,6 @@ class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
 
     override fun onResume() {
         super.onResume()
-
-
     }
 
     override fun onDestroy() {
