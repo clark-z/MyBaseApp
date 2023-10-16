@@ -12,7 +12,7 @@ import com.clarkz.baseapp.R
 import com.clarkz.baseapp.base.ZBaseActivity
 import com.clarkz.baseapp.databinding.ActivityMainBinding
 
-class MainActivity : ZBaseActivity<ActivityMainBinding>(R.string.app_name) {
+class MainActivity : ZBaseActivity<ActivityMainBinding>(barTitleId = R.string.app_name) {
 
 //    override fun getLayoutId(): Int = R.layout.activity_main
 

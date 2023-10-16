@@ -11,9 +11,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class ZMVPActivity<T : ViewBinding> constructor(
+    toolbarVisible: Boolean = true,  //标题栏是否可见
     @StringRes
     barTitleId: Int? = null,  //标题
-    toolbarVisible: Boolean = true,  //标题栏是否可见
     @ColorRes
     toolbarBackgroundColor: Int? = null,  //标题栏背景颜色
     @DrawableRes
@@ -25,8 +25,8 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
     @DrawableRes
     backgroundImage: Int? = null  //内容视图背景图片
 ) : ZBaseActivity<T>(
-    barTitleId,
     toolbarVisible,
+    barTitleId,
     toolbarBackgroundColor,
     toolbarBackgroundImage,
     toolbarBackBtnRes,
@@ -83,11 +83,19 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
     }
 
     override fun showLoading() {
+        //没有下拉刷新的情况，显示自定义loading弹窗
+        if (refreshLayout == null) {
 
+        }
     }
 
     override fun hideLoading() {
 
+        if (isRefresh) {
+            finishRefresh()
+        } else {
+            finishLoadMore()
+        }
     }
 
     override fun showShortToast(msg: String) {

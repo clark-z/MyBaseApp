@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    app:srlEnableAutoLoadMore="true"
+    tools:context=".modules.ui.RefreshLayoutActivity">
+
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srlEnableLastTime="false"
+        app:srlAccentColor="@color/purple_500"
+        app:srlClassicsSpinnerStyle="Translate"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.scwang.smart.refresh.footer.ClassicsFooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srlAccentColor="@color/teal_700"
+        app:srlClassicsSpinnerStyle="Translate"/>
+
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

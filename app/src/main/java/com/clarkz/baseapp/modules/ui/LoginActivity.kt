@@ -1,6 +1,7 @@
 package com.clarkz.baseapp.modules.ui
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.graphics.Path
 import android.view.View
 import com.clarkz.baseapp.R
@@ -9,7 +10,7 @@ import com.clarkz.baseapp.databinding.ActivityLoginBinding
 import com.clarkz.baseapp.modules.mvp.contract.IUserContract
 import com.clarkz.baseapp.modules.mvp.presenter.UserPresenter
 
-class LoginActivity : ZMVPActivity<ActivityLoginBinding>(R.string.login_btn), IUserContract.IView {
+class LoginActivity : ZMVPActivity<ActivityLoginBinding>(barTitleId = R.string.login_btn), IUserContract.IView {
 
     override val mPresenter: UserPresenter
         get() = UserPresenter(this)
@@ -31,7 +32,6 @@ class LoginActivity : ZMVPActivity<ActivityLoginBinding>(R.string.login_btn), IU
 
     override fun initView() {
 
-
     }
 
     override fun initEvent() {
@@ -46,14 +46,17 @@ class LoginActivity : ZMVPActivity<ActivityLoginBinding>(R.string.login_btn), IU
 
     private fun addClickEvents() {
         vb.btnLogin.setOnClickListener {
+
+            val intent = Intent(this, RefreshLayoutActivity::class.java)
+            startActivity(intent)
 //            mPresenter.loginByPassword("123456", "123456")
 
-            val path = Path()
-            path.moveTo(3f, 3f)
-            path.lineTo(0f, 0f)
-
-            val scaleAnimation = ObjectAnimator.ofFloat(vb.viewRound, View.SCALE_X, View.SCALE_Y, path)
-            scaleAnimation.start()
+//            val path = Path()
+//            path.moveTo(3f, 3f)
+//            path.lineTo(0f, 0f)
+//
+//            val scaleAnimation = ObjectAnimator.ofFloat(vb.viewRound, View.SCALE_X, View.SCALE_Y, path)
+//            scaleAnimation.start()
 
 //            val scale = ObjectAnimator.ofFloat(vb.viewRound, "radius", 100f, 300f)
 ////            scale.duration = 2000

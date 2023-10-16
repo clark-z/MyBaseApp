@@ -8,11 +8,14 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.viewbinding.ViewBinding
 import com.clarkz.baseapp.R
 import com.clarkz.baseapp.databinding.ActivityZbaseBinding
 import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * @author: Clark Zhong
@@ -21,9 +24,9 @@ import com.orhanobut.logger.Logger
  * @description: 基础Activity
  */
 abstract class ZBaseActivity<T : ViewBinding> constructor(
+    private val toolbarVisible: Boolean = true,  //标题栏是否可见
     @StringRes
     private val barTitleId: Int? = null,  //标题
-    private val toolbarVisible: Boolean = true,  //标题栏是否可见
     @ColorRes
     private val toolbarBackgroundColor: Int? = null,  //标题栏背景颜色
     @DrawableRes
@@ -37,6 +40,9 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
 ) : AppCompatActivity() {
 
     val animationFlag = "animation_flag"
+
+    open var isRefresh = false
+    open var refreshLayout: RefreshLayout? = null
 
     /**
      * 基础视图ViewBinding
@@ -95,6 +101,7 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
 
         initToolbar()
         initContentView()
+        initRefreshLayout()
 
         initData()
         initView()
@@ -138,7 +145,12 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
 //            //设置支持action menu
 //            setSupportActionBar(baseVB.vToolbar.root)
             //设置背景
-            updateToolbarColor(ContextCompat.getColor(this, toolbarBackgroundColor ?: R.color.teal_700))
+            updateToolbarColor(
+                ContextCompat.getColor(
+                    this,
+                    toolbarBackgroundColor ?: R.color.teal_700
+                )
+            )
 
             toolbarBackgroundImage?.let {
                 updateToolbarImage(it)
@@ -184,7 +196,21 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
         setContentView(baseVB.root)
     }
 
-    open fun initImmersionBar(){
+    private fun initRefreshLayout() {
+        refreshLayout = findViewById(R.id.refresh_layout)
+
+        refreshLayout?.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                refresh()
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                loadMore()
+            }
+        })
+    }
+
+    open fun initImmersionBar() {
         ImmersionBar.with(this)
             .statusBarColor(R.color.teal_700)
             .autoDarkModeEnable(true)
@@ -245,7 +271,6 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
     }
 
 
-
     /**
      * 返回按钮事件
      */
@@ -290,5 +315,24 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
 
     open fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(this, msg, duration).show()
+    }
+
+    open fun refresh() {
+        isRefresh = true
+    }
+
+    open fun loadMore() {
+        isRefresh = false
+    }
+
+    open fun finishRefresh() {
+        refreshLayout?.finishRefresh()
+        refreshLayout?.resetNoMoreData()
+    }
+
+    open fun finishLoadMore() {
+        refreshLayout?.finishLoadMore()
+        //如果需要实现没有更多数据，需要在加载完成后复写次方法来实现
+        //refreshLayout?.setNoMoreData(true)  或 refreshLayout?.finishRefreshWithNoMoreData()
     }
 }
