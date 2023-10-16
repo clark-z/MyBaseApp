@@ -6,9 +6,7 @@
 
     <include
         android:id="@+id/vToolbar"
-        layout="@layout/common_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        layout="@layout/common_toolbar" />
 
     <FrameLayout
         android:id="@+id/vContainer"
