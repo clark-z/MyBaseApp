@@ -1,5 +1,6 @@
 package com.clarkz.network
 
+import com.blankj.utilcode.util.NetworkUtils
 import com.clarkz.baseapp.base.IZBaseView
 import com.clarkz.network.exception.ApiException
 import io.reactivex.Observer
@@ -12,22 +13,31 @@ import java.net.UnknownHostException
 
 abstract class MySubscriber<T> constructor(
     view: IZBaseView,
-    private val isShowLoading: Boolean = true
+    private val isShowLoading: Boolean = true,
+    private val loadingText: String? = null
+
 ) : Observer<T> {
     private val mView: WeakReference<IZBaseView> by lazy { WeakReference(view) }
 
     override fun onSubscribe(d: Disposable) {
         mView.get()?.apply {
-            if (isShowLoading) {
-                showLoading()
+
+            if (!isNetworkAvailable()) {
+                //网络不可用
+                d.dispose()
+                showNetworkDisconnected()
+            } else {
+                if (isShowLoading) {
+                    showLoading(loadingText)
+                }
+                addSubscribe(d)
             }
-            addSubscribe(d)
         }
     }
 
     override fun onComplete() {
         mView.get()?.apply {
-            if (isShowLoading){
+            if (isShowLoading) {
                 hideLoading()
             }
         }
@@ -35,14 +45,14 @@ abstract class MySubscriber<T> constructor(
 
     override fun onError(e: Throwable) {
         mView.get()?.apply {
-            if (isShowLoading){
+            if (isShowLoading) {
                 hideLoading()
             }
 
-            if (e is ApiException){
+            if (e is ApiException) {
                 //服务器响应码异常处理
                 handleApiError(e)
-            }else{
+            } else {
                 //其它异常
                 handleOtherError(e)
             }
@@ -50,36 +60,43 @@ abstract class MySubscriber<T> constructor(
     }
 
     /**
+     * 网络是否连接
+     */
+    private fun isNetworkAvailable(): Boolean {
+        return NetworkUtils.isConnected()
+    }
+
+    /**
      * api请求异常
      */
-    private fun handleApiError(e: ApiException){
+    private fun handleApiError(e: ApiException) {
         mView.get()?.showShortToast(e.message ?: "未知错误")
     }
 
     /**
      * 其它网络异常
      */
-    private fun handleOtherError(e: Throwable){
-         when (e){
-             is UnknownHostException -> {
-                 mView.get()?.showShortToast("网络异常!")
-             }
+    private fun handleOtherError(e: Throwable) {
+        when (e) {
+            is UnknownHostException -> {
+                mView.get()?.showShortToast("网络异常!")
+            }
 
-             is JSONException -> {
-                 mView.get()?.showShortToast("数据解析异常!")
-             }
+            is JSONException -> {
+                mView.get()?.showShortToast("数据解析异常!")
+            }
 
-             is ConnectException -> {
-                 mView.get()?.showShortToast("服务器连接异常!")
-             }
+            is ConnectException -> {
+                mView.get()?.showShortToast("服务器连接异常!")
+            }
 
-             is HttpException -> {
-                 mView.get()?.showShortToast("Http响应异常!")
-             }
+            is HttpException -> {
+                mView.get()?.showShortToast("Http响应异常!")
+            }
 
-             else -> {
-                 mView.get()?.showShortToast("未知错误!")
-             }
-         }
+            else -> {
+                mView.get()?.showShortToast("未知错误!")
+            }
+        }
     }
 }

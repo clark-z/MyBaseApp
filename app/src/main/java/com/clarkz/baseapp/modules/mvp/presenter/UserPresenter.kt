@@ -9,9 +9,9 @@ import com.clarkz.network.MySubscriber
 class UserPresenter constructor(private val view: IUserContract.IView) : IUserContract.IPresenter,
     ZBasePresenter<IUserContract.IView>(view) {
 
-    override fun loginByPassword(account: String, password: String) {
+    override fun loginByPassword(account: String, password: String, loadingText: String) {
         UserModel.loginByPassword(account, password)
-            .subscribe(object : MySubscriber<BaseServerRsp<String>>(view, true) {
+            .subscribe(object : MySubscriber<BaseServerRsp<String>>(view, true, loadingText) {
                 override fun onNext(t: BaseServerRsp<String>) {
                     mView.get()?.loginSuccess()
                 }

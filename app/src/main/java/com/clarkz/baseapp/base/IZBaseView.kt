@@ -21,7 +21,7 @@ interface IZBaseView {
     /**
      * 显示加载中
      */
-    fun showLoading()
+    fun showLoading(loadingText: String? = null)
 
     /**
      * 隐藏加载中
@@ -30,4 +30,5 @@ interface IZBaseView {
 
     fun showShortToast(msg: String)
 
+    fun showNetworkDisconnected()
 }

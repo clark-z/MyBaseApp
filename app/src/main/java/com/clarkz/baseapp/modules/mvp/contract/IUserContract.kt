@@ -11,6 +11,6 @@ interface IUserContract {
     }
 
     interface IPresenter {
-       fun loginByPassword(account: String, password: String)
+       fun loginByPassword(account: String, password: String, loadingText: String)
     }
 }

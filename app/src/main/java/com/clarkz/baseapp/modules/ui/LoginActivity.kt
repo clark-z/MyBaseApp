@@ -3,6 +3,8 @@ package com.clarkz.baseapp.modules.ui
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Path
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import com.clarkz.baseapp.R
 import com.clarkz.baseapp.base.ZMVPActivity
@@ -47,9 +49,11 @@ class LoginActivity : ZMVPActivity<ActivityLoginBinding>(barTitleId = R.string.l
     private fun addClickEvents() {
         vb.btnLogin.setOnClickListener {
 
-            val intent = Intent(this, RefreshLayoutActivity::class.java)
-            startActivity(intent)
-//            mPresenter.loginByPassword("123456", "123456")
+//            showLoading("正在登录...")
+//            val intent = Intent(this, RefreshLayoutActivity::class.java)
+//            startActivity(intent)
+
+            mPresenter.loginByPassword("123456", "123456", "正在登录...")
 
 //            val path = Path()
 //            path.moveTo(3f, 3f)

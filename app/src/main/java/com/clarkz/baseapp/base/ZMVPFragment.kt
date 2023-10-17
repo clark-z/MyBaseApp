@@ -57,7 +57,7 @@ abstract class ZMVPFragment<T: ViewBinding>: ZBaseFragment<T>(), IZBaseView {
         compositeDisposable = null
     }
 
-    override fun showLoading() {
+    override fun showLoading(loadingText: String?) {
 
     }
 
@@ -67,5 +67,9 @@ abstract class ZMVPFragment<T: ViewBinding>: ZBaseFragment<T>(), IZBaseView {
 
     override fun showShortToast(msg: String) {
         myActivity.showToast(msg, Toast.LENGTH_SHORT)
+    }
+
+    override fun showNetworkDisconnected() {
+
     }
 }
