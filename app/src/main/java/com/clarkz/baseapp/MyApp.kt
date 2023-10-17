@@ -75,7 +75,7 @@ class MyApp : Application() {
      */
     private fun screenMatchConfig() {
         AutoSizeConfig.getInstance().apply {
-//                    isUseDeviceSize = true
+//            isUseDeviceSize = true
 //            isBaseOnWidth = false    //默认以宽度适配
 
             setLog(false)

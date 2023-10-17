@@ -70,7 +70,19 @@ abstract class MySubscriber<T> constructor(
      * api请求异常
      */
     private fun handleApiError(e: ApiException) {
-        mView.get()?.showShortToast(e.message ?: "未知错误")
+        when(e.code){
+            1001 -> {
+
+            }
+
+            1002 -> {
+
+            }
+
+            else -> {
+                mView.get()?.showShortToast(e.message ?: "未知错误")
+            }
+        }
     }
 
     /**

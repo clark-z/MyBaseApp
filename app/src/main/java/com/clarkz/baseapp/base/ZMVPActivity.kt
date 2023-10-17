@@ -1,6 +1,5 @@
 package com.clarkz.baseapp.base
 
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -11,6 +10,7 @@ import com.clarkz.baseapp.R
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.impl.LoadingPopupView
+import com.orhanobut.logger.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -91,16 +91,18 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
     }
 
     override fun showLoading(loadingText: String?) {
-        //没有下拉刷新的情况，显示自定义loading弹窗
         if (refreshLayout == null) {
+            //没有下拉刷新的情况，显示自定义loading弹窗
             if (loadingDialog == null) {
                 loadingDialog = XPopup.Builder(this)
                     .dismissOnBackPressed(false)
                     .dismissOnTouchOutside(false)
                     .isLightNavigationBar(true)
-                    .asLoading(loadingText ?: getString(R.string.loading), R.layout.dialog_general_loading, LoadingPopupView.Style.Spinner)
-//                    .asLoading(getString(R.string.loading), LoadingPopupView.Style.Spinner)
-
+                    .asLoading(
+                        loadingText ?: getString(R.string.loading),
+                        R.layout.dialog_general_loading,
+                        LoadingPopupView.Style.Spinner
+                    )
             }
 
             loadingDialog?.show()
@@ -110,8 +112,9 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
     override fun hideLoading() {
 
         if (refreshLayout == null) {
+            //没有下拉刷新的页面
             loadingDialog?.dismiss()
-        }else {
+        } else {
             if (isRefresh) {
                 finishRefresh()
             } else {
@@ -127,14 +130,12 @@ abstract class ZMVPActivity<T : ViewBinding> constructor(
     override fun showNetworkDisconnected() {
         if (networkErrorDialog == null) {
             networkErrorDialog = XPopup.Builder(this)
-//                .isDestroyOnDismiss(true)
+//                .isDestroyOnDismiss(true)  //仅使用一次的情况
                 .asConfirm("提示", "网络连接失败,请检查网络设置", "取消", "确定", {
-
+                    Logger.d("关闭网络提示弹窗>>>>>>>>>>")
                 }, null, true)
         }
 
-        if (networkErrorDialog?.isShow  != true){
-            networkErrorDialog?.show()
-        }
+        networkErrorDialog?.show()
     }
 }
