@@ -34,8 +34,35 @@ android {
     buildFeatures{
         viewBinding true
     }
-    dataBinding {
-        enable = true
+
+//    signingConfigs {
+//        release {
+//            storeFile file('keystore/CheerbleKeystore')
+//            storePassword '290287498'
+//            keyAlias = 'cheerble'
+//            keyPassword '290287498'
+//        }
+//
+//        debug {
+//            storeFile file('keystore/CheerbleKeystore')
+//            storePassword '290287498'
+//            keyAlias = 'cheerble'
+//            keyPassword '290287498'
+//        }
+//    }
+
+    buildTypes {
+        release {
+//            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'mpProguard.cfg'
+        }
+
+        debug {
+//            signingConfig signingConfigs.debug
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'mpProguard.cfg'
+        }
     }
 }
 

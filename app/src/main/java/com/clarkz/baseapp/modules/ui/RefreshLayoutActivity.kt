@@ -7,8 +7,6 @@ import android.os.Looper
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.QuickViewHolder
 import com.clarkz.baseapp.R
@@ -18,7 +16,7 @@ import com.clarkz.baseapp.modules.mvp.contract.IUserContract
 import com.clarkz.baseapp.modules.mvp.presenter.UserPresenter
 
 class RefreshLayoutActivity :
-    ZMVPActivity<ActivityRefreshLayoutBinding>(barTitleId = R.string.refresh), IUserContract.IView {
+    ZMVPActivity<ActivityRefreshLayoutBinding>(barTitleId = R.string.refresh, toolbarBackgroundColor = R.color.white), IUserContract.IView {
 
 
     private val dataList = ArrayList<String>()
@@ -46,6 +44,11 @@ class RefreshLayoutActivity :
 
     override fun getViewBinding(): ActivityRefreshLayoutBinding =
         ActivityRefreshLayoutBinding.inflate(layoutInflater)
+
+    override fun onDestroy() {
+        handler.removeCallbacksAndMessages(null)
+        super.onDestroy()
+    }
 
     override fun initData() {
         for (i in 0..20) {
@@ -103,7 +106,9 @@ class RefreshLayoutActivity :
     @SuppressLint("NotifyDataSetChanged")
     override fun finishLoadMore() {
         super.finishLoadMore()
-        initData()
+        for (i in dataList.size until 20+dataList.size) {
+            dataList.add(i.toString())
+        }
         adapter.notifyDataSetChanged()
     }
 }

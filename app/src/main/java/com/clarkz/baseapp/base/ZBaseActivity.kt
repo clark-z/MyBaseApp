@@ -8,7 +8,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import androidx.viewbinding.ViewBinding
 import com.clarkz.baseapp.R
 import com.clarkz.baseapp.databinding.ActivityZbaseBinding
@@ -53,9 +52,6 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
 
     //内容视图ViewBinding
     open lateinit var vb: T
-
-//    @LayoutRes
-//    abstract fun getLayoutId(): Int
 
     /**
      * 获取内容视图
@@ -211,8 +207,9 @@ abstract class ZBaseActivity<T : ViewBinding> constructor(
     }
 
     open fun initImmersionBar() {
+
         ImmersionBar.with(this)
-            .statusBarColor(R.color.teal_700)
+            .statusBarColor(toolbarBackgroundColor ?: R.color.teal_700)
             .autoDarkModeEnable(true)
             .init()
 

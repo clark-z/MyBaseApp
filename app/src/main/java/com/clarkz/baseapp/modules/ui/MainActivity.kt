@@ -78,10 +78,6 @@ class MainActivity : ZBaseActivity<ActivityMainBinding>(barTitleId = R.string.ap
     override fun initEvent() {
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
         super.onDestroy()

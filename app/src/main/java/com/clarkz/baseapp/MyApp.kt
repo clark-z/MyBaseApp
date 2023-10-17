@@ -77,6 +77,8 @@ class MyApp : Application() {
         AutoSizeConfig.getInstance().apply {
 //                    isUseDeviceSize = true
 //            isBaseOnWidth = false    //默认以宽度适配
+
+            setLog(false)
         }
     }
 }
